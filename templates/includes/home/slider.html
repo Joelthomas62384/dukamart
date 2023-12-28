@@ -1,0 +1,35 @@
+{% load static %}
+
+
+<div class="slider-area">
+    <div class="swiper-container slider__active">
+        <div class="slider-wrapper swiper-wrapper">
+            {% for i in slider %}
+            <div class="single-slider swiper-slide slider-height d-flex align-items-center"
+                data-background="media/{{i.Slider_image}}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-5">
+                            <div class="slider-content">
+                                <div class="slider-top-btn" data-animation="fadeInLeft" data-delay="1.5s">
+                                    <a href="product-details.html" class="st-btn b-radius">{{i.deal}}</a>
+                                </div>
+                                <h2 data-animation="fadeInLeft" data-delay="1.7s" class="pt-15 slider-title pb-5">SALE
+                                    {{i.discount}}% OFF <br>{{i.title}}</h2>
+                                <p class="pr-20 slider_text" data-animation="fadeInLeft" data-delay="1.9s">Discount
+                                    {{i.discount}}% On Products & Free Shipping</p>
+                                <div class="slider-bottom-btn mt-75">
+                                    <a data-animation="fadeInUp" data-delay="1.15s" href="shop.html"
+                                        class="st-btn-b b-radius">Discover now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /single-slider -->
+            {% endfor %}
+            <div class="main-slider-paginations"></div>
+        </div>
+    </div>
+</div>
+<!-- slider-area-end -->
