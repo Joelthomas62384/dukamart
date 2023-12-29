@@ -80,7 +80,7 @@ class Product(models.Model):
 
 
     def __str__(self) -> str:
-        return self.name
+        return self.name[:20] + "..."
 
 
 class Additional_Information(models.Model):

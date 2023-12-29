@@ -45,14 +45,13 @@
     </main>
 
 
-    {% include "includes/footer.html" %}
-
-
-      <!-- JS here -->
-      <script src="{% static 'assets/js/vendor/jquery.js' %}"></script>    
-      <script src="{% static 'assets/js/vendor/waypoints.js' %}"></script>
-      <script src="{% static 'assets/js/bootstrap-bundle.js' %}"></script>
-      <script src="{% static 'assets/js/meanmenu.js' %}"></script>
+    
+    
+    <!-- JS here -->
+    <script src="{% static 'assets/js/vendor/jquery.js' %}"></script>    
+    <script src="{% static 'assets/js/vendor/waypoints.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap-bundle.js' %}"></script>
+    <script src="{% static 'assets/js/meanmenu.js' %}"></script>
       <script src="{% static 'assets/js/swiper-bundle.js' %}"></script>
       <script src="{% static 'assets/js/tweenmax.js' %}"></script>
       <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
@@ -68,6 +67,7 @@
       <script src="{% static 'assets/js/ajax-form.js' %}"></script>
       <script src="{% static 'assets/js/main.js' %}"></script>
       {% block js %}{% endblock js %}
+      {% include "includes/footer.html" %}
    </body>
 
 </html>
