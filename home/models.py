@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -40,6 +41,9 @@ class Section(models.Model):
 class Main_Category(models.Model):
     name = models.CharField(max_length=200)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 
 class Category(models.Model):
@@ -68,14 +72,30 @@ class Product(models.Model):
     total = models.PositiveIntegerField(default=0)
     available = models.PositiveIntegerField(default=0)
     discount = models.PositiveIntegerField(default=0)
-    Description = models.TextField(blank=True,null=True)
+    Description = RichTextField(blank=True,null=True)
     brand = models.CharField(max_length=100,default="")
     category = models.ForeignKey(Category, null=True,on_delete=models.DO_NOTHING)
     tags = models.CharField(max_length=200)
-    product_information = models.TextField(blank=True,null=True)
+    product_information = RichTextField(blank=True,null=True)
 
 
     def __str__(self) -> str:
         return self.name
 
+
+class Additional_Information(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    specification = models.CharField(max_length=100)
+    detail = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.product.name
+    
+
+class Product_images(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    image = models.CharField(max_length=500)
+
+    def __str__(self) -> str:
+        return self.product.name
 
