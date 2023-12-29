@@ -1,5 +1,8 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.utils.text import slugify
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -77,10 +80,40 @@ class Product(models.Model):
     category = models.ForeignKey(Category, null=True,on_delete=models.DO_NOTHING)
     tags = models.CharField(max_length=200)
     product_information = RichTextField(blank=True,null=True)
+    slug = models.SlugField(max_length=200,unique=True,null=True,blank=True)
+
+
+    # def save(self, *args, **kwargs):
+
+    #     if not self.slug:
+    #         base_slug = slugify(self.name)
+    #         unique_slug = base_slug 
+
+    #         while Product.objects.filter(slug=base_slug).exists():
+    #             unique_slug = f"{base_slug}-{self.id}"
+    #         self.slug = unique_slug
+        
+    #     super().save(*args, **kwargs)
 
 
     def __str__(self) -> str:
         return self.name[:20] + "..."
+
+
+@receiver(pre_save, sender=Product)
+def generate_slug(sender, instance,*args, **kwargs):
+    if not instance.slug:
+        base_slug = slugify(instance.name)
+        unique_slug = base_slug
+
+        while Product.objects.filter(slug=unique_slug).exists():
+            unique_slug = f"{base_slug}-{instance.id}"
+        instance.slug = unique_slug
+
+
+pre_save.connect(generate_slug, sender=Product)
+
+
 
 
 class Additional_Information(models.Model):
