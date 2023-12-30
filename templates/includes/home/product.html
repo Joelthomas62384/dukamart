@@ -1,3 +1,4 @@
+{% load product_information %}
 <section class="topsell__area-1 pt-15">
     <div class="container">
         <div class="row">
@@ -30,7 +31,7 @@
                         <div class="product__item swiper-slide">
                             <div class="product__thumb fix">
                                 <div class="product-image w-img">
-                                    <a href="product-details.html">
+                                    <a href="{% url "product_detail" prod.slug %}">
                                         <img src="{{prod.featured_image}}" style="height:240px;" alt="product">
                                     </a>
                                 </div>
@@ -56,10 +57,10 @@
                                 <h6><a href="product-details.html">{{prod.name|truncatewords:8}}</a></h6>
                                
                                 <div class="price mb-10">
-                                    <span>&#8377; {{prod.price}}</span>
+                                    <del>&#8377; {{prod.price}}</del> <span>&#8377; {% discount_calculation prod.price prod.discount %}</span>
                                 </div>
                                 <div class="progress mb-5">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 10%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-danger" role="progressbar" style="width: {% progress_bar prod.total prod.available %}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                                 <div class="progress-rate">
                                     <span>Sold:{{prod.available}}/{{prod.total}}</span>
@@ -149,7 +150,7 @@
                                 </div>
                             </div>
                             <div class="product__price">
-                                <span>&#8377; {{prod.price}}</span>
+                               <del>&#8377; {{prod.price}}</del> <span>&#8377; {% discount_calculation prod.price prod.discount %}</span>
                             </div>
                             <div class="product__modal-des mt-20 mb-15">
                                 <ul>

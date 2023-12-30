@@ -987,7 +987,7 @@ input {
 }
 .breadcrumb__wrapper .breadcrumb .breadcrumb-item + .breadcrumb-item::before {
   color: #999;
-  content: var(--bs-breadcrumb-divider, "https://themepure.net/");
+  content: var(--bs-breadcrumb-divider, "https://dukamart.com/");
 }
 
 .breadcrumb-two ul li {

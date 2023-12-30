@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
+
 # Create your models here.
 
 
@@ -44,6 +45,10 @@ class Section(models.Model):
 class Main_Category(models.Model):
     name = models.CharField(max_length=200)
 
+    class Meta:
+        verbose_name = "Main Category"
+        verbose_name_plural = "Main Categories"
+
     def __str__(self) -> str:
         return self.name
 
@@ -52,6 +57,10 @@ class Main_Category(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=200)
     main_category = models.ForeignKey(Main_Category,on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.name
@@ -83,17 +92,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=200,unique=True,null=True,blank=True)
 
 
-    # def save(self, *args, **kwargs):
-
-    #     if not self.slug:
-    #         base_slug = slugify(self.name)
-    #         unique_slug = base_slug 
-
-    #         while Product.objects.filter(slug=base_slug).exists():
-    #             unique_slug = f"{base_slug}-{self.id}"
-    #         self.slug = unique_slug
-        
-    #     super().save(*args, **kwargs)
+ 
 
 
     def __str__(self) -> str:
