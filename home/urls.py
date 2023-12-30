@@ -9,6 +9,7 @@ urlpatterns = [
     path('login-page',views.login_page,name="login_page"),
     path('logout-user',views.logout_user,name="logout_user"),
     path('category-wise',views.category_wise,name="category_wise"),
+    path('filter-category',views.filter_category,name="filter_category"),
     path('api/user/validate/<username>/<field>',views.user_validate,name="user_validate"),
 
 ]

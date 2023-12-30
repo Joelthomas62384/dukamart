@@ -4,6 +4,8 @@ from . models import *
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+import json
+from django.template.loader import render_to_string
 
 
 
@@ -109,3 +111,19 @@ def user_validate(request,username,field):
             return JsonResponse({"status":True})
     
 
+
+def filter_category(request):
+    product = Product.objects.all()
+    if request.method == 'POST':
+        # Assuming the JSON payload contains an array named 'categories'
+        json_data = json.loads(request.body.decode('utf-8'))
+        selected_categories = json_data.get('categories', [])
+        product = Product.objects.filter(category__id__in=selected_categories).distinct()
+    context = { "products": product }
+    data = render_to_string("includes/ajax/productAjax.html", context)
+    print(data)
+
+    
+
+
+    return JsonResponse({"data":data})

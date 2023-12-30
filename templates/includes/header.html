@@ -159,10 +159,10 @@
                                         <ul>
                                             {% for maincat in category %}
                                             <li>
-                                                <a href="shop.html">{{maincat.name}}<i class="far fa-angle-down"></i></a>
+                                                <a href="{% url 'category_wise' %}">{{maincat.name}}<i class="far fa-angle-down"></i></a>
                                                 <ul class="mega-menu">
                                                     {% for cat in maincat.category_set.all %}
-                                                    <li><a href="shop.html">{{cat.name}}</a>
+                                                    <li><a href="{% url 'category_wise' %}">{{cat.name}}</a>
                                                         <ul class="mega-item">
                                                             {% for subcat in cat.sub_category_set.all %}
                                                             <li><a href="product-details.html">{{subcat.name}}</a></li>
@@ -178,7 +178,7 @@
                                             </li>
                                             {% endfor %}
                                             
-                                            {% comment %} <li><a href="shop.html">Health &amp; Beauty</a></li> {% endcomment %}
+                                            {% comment %} <li><a href="{% url 'category_wise' %}">Health &amp; Beauty</a></li> {% endcomment %}
                                         </ul>
                                     </nav>
                                 </div>

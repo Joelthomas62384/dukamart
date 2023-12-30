@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load product_information %}
 
 {% block content %}
 
@@ -33,7 +34,7 @@
                             {% comment %} {{product}} {% endcomment %}
                             {% for cat in category %}
                             <div class="single-widget-category">
-                                <input type="checkbox" id="cat-item-{{forloop.counter}}" name="cat-item">
+                                <input type="checkbox" class="checker" id="cat-item-{{forloop.counter}}" value="{{cat.id}}" name="cat-item">
                                 <label for="cat-item-{{forloop.counter}}">{{cat.name}} <span>({{cat.product_set.all.count}})</span></label>
                             </div>
                             {% endfor %}
@@ -41,255 +42,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="product-widget mb-30">
-                    <h5 class="pt-title">Filter By Price</h5>
-                    <div class="price__slider mt-30">
-                        <div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div class="ui-slider-range ui-corner-all ui-widget-header" style="left: 0%; width: 100%;"></div><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0%;"></span><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 100%;"></span></div>
-                        <div>
-                            <form action="#" class="s-form mt-20">
-                                <input type="text" id="amount" readonly="">
-                                <button type="submit" class="tp-btn-square-lg">Filter</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-widget mb-30">
-                    <h5 class="pt-title">Choose Color</h5>
-                    <div class="product__color mt-20">
-                        <ul>
-                           <li>
-                              <a href="#" class="black"></a>
-                           </li>
-                           <li>
-                              <a href="#" class="blue"></a>
-                           </li>
-                           <li>
-                              <a href="#" class="red"></a>
-                           </li>
-                           <li>
-                              <a href="#" class="yellow"></a>
-                           </li>
-                           <li>
-                              <a href="#" class="pink"></a>
-                           </li>
-                           <li>
-                              <a href="#" class="brown"></a>
-                           </li>
-                           <li>
-                              <a href="#" class="green"></a>
-                           </li>
-                           <li>
-                              <a href="#" class="oragne"></a>
-                           </li>
-                        </ul>
-                  </div>
-                </div>
-                <div class="product-widget mb-30">
-                    <h5 class="pt-title">Choose Rating</h5>
-                    <div class="widget-category-list mt-20">
-                        <form action="#">
-                            <div class="single-widget-rating">
-                                <input type="checkbox" id="star-item-1" name="star-item">
-                                <label for="star-item-1">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>(54)</span>
-                                </label>
-                            </div>
-                            <div class="single-widget-rating">
-                                <input type="checkbox" id="star-item-2" name="star-item">
-                                <label for="star-item-2">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <span>(37)</span>
-                                </label>
-                            </div>
-                            <div class="single-widget-rating">
-                                <input type="checkbox" id="star-item-3" name="star-item">
-                                <label for="star-item-3">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <span>(7)</span>
-                                </label>
-                            </div>
-                            <div class="single-widget-rating">
-                                <input type="checkbox" id="star-item-4" name="star-item">
-                                <label for="star-item-4">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <span>(5)</span>
-                                </label>
-                            </div>
-                            <div class="single-widget-rating">
-                                <input type="checkbox" id="star-item-5" name="star-item">
-                                <label for="star-item-5">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <i class="fal fa-star"></i>
-                                    <span>(3)</span>
-                                </label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="product-widget mb-30">
-                    <h5 class="pt-title">Choose Size</h5>
-                    <div class="widget-category-list mt-20">
-                        <form action="#">
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="choose-item-1" name="choose-item">
-                                <label for="choose-item-1">S <span>(12)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="choose-item-2" name="choose-item">
-                                <label for="choose-item-2">L <span>(60)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="choose-item-3" name="choose-item">
-                                <label for="choose-item-3">M <span>(41)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="choose-item-4" name="choose-item">
-                                <label for="choose-item-4">XXL <span>(28)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="choose-item-5" name="choose-item">
-                                <label for="choose-item-5">2XL <span>(21)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="choose-item-7" name="choose-item">
-                                <label for="choose-item-7">3XL <span>(62)</span></label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="product-widget mb-30">
-                    <h5 class="pt-title">Choose Brand</h5>
-                    <div class="widget-category-list mt-20">
-                        <form action="#">
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="brand-item-1" name="brand-item">
-                                <label for="brand-item-1">CarRentals <span>(12)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="brand-item-2" name="brand-item">
-                                <label for="brand-item-2">CarVoodoo <span>(60)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="brand-item-3" name="brand-item">
-                                <label for="brand-item-3">Creative <span>(41)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="brand-item-4" name="brand-item">
-                                <label for="brand-item-4">Impact <span>(28)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="brand-item-5" name="brand-item">
-                                <label for="brand-item-5">IQVia <span>(21)</span></label>
-                            </div>
-                            <div class="single-widget-category">
-                                <input type="checkbox" id="brand-item-7" name="brand-item">
-                                <label for="brand-item-7">LeadsGreen <span>(62)</span></label>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="product-widget mb-30">
-                    <h5 class="pt-title">Special Offers</h5>
-                    <div class="product__sm mt-20">
-                        <ul>
-                            <li class="product__sm-item d-flex align-items-center">
-                                <div class="product__sm-thumb mr-20">
-                                    <a href="product-details.html">
-                                        <img src="{% static 'assets/img/product/sm-1.jpg' %}" alt="">
-                                    </a>
-                                </div>
-                                <div class="product__sm-content">
-                                    <h5 class="product__sm-title">
-                                        <a href="product-details.html">Classic Leather Backpack Daypack 2022</a>
-                                    </h5>
-                                    <div class="product__sm-price">
-                                        <span class="price">$300.00</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="product__sm-item d-flex align-items-center">
-                                <div class="product__sm-thumb mr-20">
-                                    <a href="product-details.html">
-                                        <img src="{% static 'assets/img/product/sm-2.jpg' %}" alt="">
-                                    </a>
-                                </div>
-                                <div class="product__sm-content">
-                                    <h5 class="product__sm-title">
-                                        <a href="product-details.html">Samsung Galaxy A12, 32GB, Black - (Locked)</a>
-                                    </h5>
-                                    <div class="product__sm-price">
-                                        <span class="price">$150.00</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="product__sm-item d-flex align-items-center">
-                                <div class="product__sm-thumb mr-20">
-                                    <a href="product-details.html">
-                                        <img src="{% static 'assets/img/product/sm-3.jpg' %}" alt="">
-                                    </a>
-                                </div>
-                                <div class="product__sm-content">
-                                    <h5 class="product__sm-title">
-                                        <a href="#">Coffee Maker AH240a Full Function</a>
-                                    </h5>
-                                    <div class="product__sm-price">
-                                        <span class="price">$300.00</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="product__sm-item d-flex align-items-center">
-                                <div class="product__sm-thumb mr-20">
-                                    <a href="product-details.html">
-                                        <img src="{% static 'assets/img/product/sm-4.jpg' %}" alt="">
-                                    </a>
-                                </div>
-                                <div class="product__sm-content">
-                                    <h5 class="product__sm-title">
-                                        <a href="product-details.html">Imported Wooden Felt Cushion Chair</a>
-                                    </h5>
-                                    <div class="product__sm-price">
-                                        <span class="price">$120.00</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="product__sm-item d-flex align-items-center">
-                                <div class="product__sm-thumb mr-20">
-                                    <a href="product-details.html">
-                                        <img src="{% static 'assets/img/product/sm-5.jpg' %}" alt="">
-                                    </a>
-                                </div>
-                                <div class="product__sm-content">
-                                    <h5 class="product__sm-title">
-                                        <a href="product-details.html">Sunhouse Decorative Lights - Imported</a>
-                                    </h5>
-                                    <div class="product__sm-price">
-                                        <span class="price">$110.00</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+
+               
+                
+                
+                
             </div>
             <div class="col-xl-9 col-lg-8">
                 <div class="shop-banner mb-30">
@@ -298,7 +55,7 @@
                         <img class="banner-sm" src="{% static 'assets/img/banner/sl-banner-sm.png' %}" alt="">
                         <div class="banner-content text-center">
                             <p class="banner-text mb-30">Hurry Up! <br> Free Shipping All Order Over $99</p>
-                            <a href="shop.html" class="st-btn-d b-radius">Discover now</a>
+                            <a href="{% url 'category_wise' %}" class="st-btn-d b-radius">Discover now</a>
                         </div>
                     </div>
                 </div>
@@ -363,7 +120,7 @@
                                                 </a>
                                             </div>
                                             <div class="product-action">
-                                                <a href="#" class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId">
+                                                <a href="#" class="icon-box icon-box-1" data-bs-toggle="modal" data-bs-target="#productModalId{{forloop.counter}}">
                                                     <i class="fal fa-eye"></i>
                                                     <i class="fal fa-eye"></i>
                                                 </a>
@@ -390,14 +147,14 @@
                                                 <span>(01 review)</span>
                                             </div>
                                             <div class="price mb-10">
-                                                <span>$110-$150</span>
+                                              <del> ₹{{product.price}}</del>  <span>₹{% discount_calculation product.price product.discount %}</span> 
                                             </div>
                                         </div>
                                         <div class="product__add-cart-s text-center">
                                             <button type="button" class="cart-btn d-flex mb-10 align-items-center justify-content-center w-100">
                                             Add to Cart
                                             </button>
-                                            <button type="button" class="wc-checkout d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#productModalId">
+                                            <button type="button" class="wc-checkout d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#productModalId{{forloop.counter}}">
                                                 Quick View
                                             </button>
                                         </div>
@@ -416,22 +173,22 @@
                                 <nav>
                                    <ul>
                                       <li>
-                                         <a href="shop.html" class="active">1</a>
+                                         <a href="{% url 'category_wise' %}" class="active">1</a>
                                       </li>
                                       <li>
-                                         <a href="shop.html">2</a>
+                                         <a href="{% url 'category_wise' %}">2</a>
                                       </li>
                                       <li>
-                                         <a href="shop.html">3</a>
+                                         <a href="{% url 'category_wise' %}">3</a>
                                       </li>
                                      <li>
-                                        <a href="shop.html">5</a>
+                                        <a href="{% url 'category_wise' %}">5</a>
                                      </li>
                                      <li>
-                                        <a href="shop.html">6</a>
+                                        <a href="{% url 'category_wise' %}">6</a>
                                      </li>
                                       <li>
-                                         <a href="shop.html">
+                                         <a href="{% url 'category_wise' %}">
                                             <i class="fal fa-angle-double-right"></i>
                                          </a>
                                       </li>
@@ -448,7 +205,8 @@
 <!-- shop-area-end -->
 
 <!-- shop modal start -->
-<div class="modal fade" id="productModalId" tabindex="-1" role="dialog" aria-hidden="true">
+{% for product in products %}
+<div class="modal fade" id="productModalId{{forloop.counter}}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered product__modal" role="document">
         <div class="modal-content">
             <div class="product__modal-wrapper p-relative">
@@ -460,54 +218,43 @@
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="product__modal-box">
                             <div class="tab-content" id="modalTabContent">
-                                <div class="tab-pane fade show active" id="nav1" role="tabpanel" aria-labelledby="nav1-tab">
+
+                                <div class="tab-pane fade show active" id="nav{{product.product_images_set.first.id}}" role="tabpanel" aria-labelledby="nav{{product.product_images_set.first.id}}-tab">
                                     <div class="product__modal-img w-img">
-                                        <img src="{% static 'assets/img/quick-view/quick-view-1.jpg' %}" alt="">
+                                        <img src="{{product.product_images_set.first.image}}" alt="">
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="nav2" role="tabpanel" aria-labelledby="nav2-tab">
+                                {% for image in product.product_images_set.all|slice:"1:" %}
+                                <div class="tab-pane fade" id="nav{{image.id}}" role="tabpanel" aria-labelledby="nav{{image.id}}-tab">
                                     <div class="product__modal-img w-img">
-                                        <img src="{% static 'assets/img/quick-view/quick-view-2.jpg' %}" alt="">
+                                        <img src="{{image.image}}" alt="">
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="nav3" role="tabpanel" aria-labelledby="nav3-tab">
-                                    <div class="product__modal-img w-img">
-                                        <img src="{% static 'assets/img/quick-view/quick-view-3.jpg' %}" alt="">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="nav4" role="tabpanel" aria-labelledby="nav4-tab">
-                                    <div class="product__modal-img w-img">
-                                        <img src="{% static 'assets/img/quick-view/quick-view-4.jpg' %}" alt="">
-                                    </div>
-                                </div>
-                                </div>
+                                {% endfor %}
+                                
+                            </div>
                             <ul class="nav nav-tabs" id="modalTab" role="tablist">
+
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="nav1-tab" data-bs-toggle="tab" data-bs-target="#nav1" type="button" role="tab" aria-controls="nav1" aria-selected="true">
-                                        <img src="{% static 'assets/img/quick-view/quick-nav-1.jpg' %}" alt="">
+                                    <button class="nav-link active" id="nav{{product.product_images_set.first.id}}-tab" data-bs-toggle="tab" data-bs-target="#nav{{product.product_images_set.first.id}}" type="button" role="tab" aria-controls="nav{{product.product_images_set.first.id}}" aria-selected="true">
+                                        <img src="{{product.product_images_set.first.image}}" style="height:85px;width:85px;" alt="">
                                     </button>
                                 </li>
+                                {% for image in product.product_images_set.all|slice:"1:" %}
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="nav2-tab" data-bs-toggle="tab" data-bs-target="#nav2" type="button" role="tab" aria-controls="nav2" aria-selected="false">
-                                    <img src="{% static 'assets/img/quick-view/quick-nav-2.jpg' %}" alt="">
+                                    <button class="nav-link" id="nav{{image.id}}-tab" data-bs-toggle="tab" data-bs-target="#nav{{image.id}}" type="button" role="tab" aria-controls="nav{{image.id}}" aria-selected="false">
+                                    <img src="{{image.image}}" style="height:85px;width:85px;" alt="">
                                     </button>
                                 </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="nav3-tab" data-bs-toggle="tab" data-bs-target="#nav3" type="button" role="tab" aria-controls="nav3" aria-selected="false">
-                                    <img src="{% static 'assets/img/quick-view/quick-nav-3.jpg' %}" alt="">
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="nav4-tab" data-bs-toggle="tab" data-bs-target="#nav4" type="button" role="tab" aria-controls="nav4" aria-selected="false">
-                                    <img src="{% static 'assets/img/quick-view/quick-nav-4.jpg' %}" alt="">
-                                    </button>
-                                </li>
+
+                                {% endfor %}
+
                                 </ul>
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="product__modal-content">
-                            <h4><a href="product-details.html">Samsung C49J89: £875, Debenhams Plus</a></h4>
+                            <h4><a href="product-details.html">{{product.name|truncatewords:20}}</a></h4>
                             <div class="product__review d-sm-flex">
                                 <div class="rating rating__shop mb-10 mr-30">
                                 <ul>
@@ -523,19 +270,14 @@
                                 </div>
                             </div>
                             <div class="product__price">
-                                <span>$109.00 – $307.00</span>
+                                <del> ₹{{product.price}}</del>  <span>₹{% discount_calculation product.price product.discount %}</span> 
                             </div>
                             <div class="product__modal-des mt-20 mb-15">
-                                <ul>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Bass and Stereo Sound.</a></li>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Display with 3088 x 1440 pixels resolution.</a></li>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Memory, Storage & SIM: 12GB RAM, 256GB.</a></li>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Androi v10.0 Operating system.</a></li>
-                                </ul>
+                               {{product.Description|safe|truncatewords_html:30}}
                             </div>
                             <div class="product__stock mb-20">
                                 <span class="mr-10">Availability :</span>
-                                <span>1795 in stock</span>
+                                <span>{{product.available}} in stock</span>
                             </div>
                             <div class="product__modal-form">
                                 <form action="#">
@@ -551,18 +293,12 @@
                             </div>
                             <div class="product__stock mb-30">
                                 <ul>
+                                    {% for add in product.additional_information_set.all %}
                                     <li><a href="#">
-                                        <span class="sku mr-10">SKU:</span>
-                                        <span>Samsung C49J89: £875, Debenhams Plus</span></a>
+                                        <span class="sku mr-10">{{add.specification}}:</span>
+                                        <span>{{add.detail}}</span></a>
                                     </li>
-                                    <li><a href="#">
-                                        <span class="cat mr-10">Categories:</span>
-                                        <span>iPhone, Tablets</span></a>
-                                    </li>
-                                    <li><a href="#">
-                                        <span class="tag mr-10">Tags:</span>
-                                        <span>Smartphone, Tablets</span></a>
-                                    </li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
@@ -573,5 +309,49 @@
         </div>
     </div>
 </div>
-
+{% endfor %}
 {% endblock content %}
+{% block js %}
+<script>
+
+    let url = "{% url 'filter_category' %}"
+    
+    let procureRes = async (req)=>{
+        let data = await fetch(url,{
+            method:'POSt',
+            headers:{
+                'Content-Type':'application/json',
+                'X-CSRFToken':'{{csrf_token}}'
+            },
+            body:JSON.stringify({'categories':req})
+        })
+        return await data.json()
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let checks = document.querySelectorAll(".checker");
+
+        checks.forEach((checkbox) => {
+            checkbox.addEventListener("change", async (event) => {
+                let checked = [];
+
+                checks.forEach((checkbox) => {
+                    if (checkbox.checked) {
+                        checked.push(checkbox.value);  
+                    }
+                });
+                console.log(checked)
+                let res = await procureRes(checked)
+                console.log(res)
+
+             
+
+               
+            });
+        });
+    });
+</script>
+
+
+
+{% endblock js %}
