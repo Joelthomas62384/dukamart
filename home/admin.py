@@ -37,6 +37,7 @@ admin.site.register(Main_Category)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(Section)
+admin.site.register(Cart)
 
 
 

@@ -15,3 +15,7 @@ def progress_bar(total, availables):
 def discount_calculation(price, discount):
     discount_price = int(price) * int(discount)/100
     return ceil(discount_price)
+
+@register.filter(name='mult')
+def mult(value, arg):
+    return value * arg

@@ -108,14 +108,14 @@
                 <div class="tab-content" id="productGridTabContent">
                     <div class="tab-pane fade  show active" id="FourCol" role="tabpanel" aria-labelledby="FourCol-tab">
                         <div class="tp-wrapper">
-                            <div class="row g-0">
+                            <div class="row g-0" id="product-container">
                                 {% for product in products %}
 
                                 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                                     <div class="product__item product__item-d">
                                         <div class="product__thumb fix">
                                             <div class="product-image w-img">
-                                                <a href="product-details.html">
+                                                <a href="{% url "product_detail" product.slug %}">
                                                     <img src="{{product.featured_image}}" style="width:165px;height:165px;" alt="product">
                                                 </a>
                                             </div>
@@ -135,7 +135,7 @@
                                             </div>
                                         </div>
                                         <div class="product__content-3">
-                                            <h6><a href="product-details.html">{{product.name|truncatechars:25}}</a></h6>
+                                            <h6><a href="{% url "product_detail" product.slug %}">{{product.name|truncatechars:25}}</a></h6>
                                             <div class="rating mb-5">
                                                 <ul>
                                                     <li><a href="#"><i class="fal fa-star"></i></a></li>
@@ -254,7 +254,7 @@
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="product__modal-content">
-                            <h4><a href="product-details.html">{{product.name|truncatewords:20}}</a></h4>
+                            <h4><a href="{% url "product_detail" product.slug %}">{{product.name|truncatewords:20}}</a></h4>
                             <div class="product__review d-sm-flex">
                                 <div class="rating rating__shop mb-10 mr-30">
                                 <ul>
@@ -315,17 +315,27 @@
 <script>
 
     let url = "{% url 'filter_category' %}"
-    
-    let procureRes = async (req)=>{
-        let data = await fetch(url,{
-            method:'POSt',
-            headers:{
-                'Content-Type':'application/json',
-                'X-CSRFToken':'{{csrf_token}}'
-            },
-            body:JSON.stringify({'categories':req})
-        })
-        return await data.json()
+    let prodContainer = document.getElementById("product-container")
+
+    let procureRes = async (req) => {
+        try {
+            let data = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ 'categories': req })
+            });
+
+            if (!data.ok) {
+                throw new Error(`HTTP error! Status: ${data.status}`);
+            }
+
+            return await data.json();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -333,24 +343,17 @@
 
         checks.forEach((checkbox) => {
             checkbox.addEventListener("change", async (event) => {
-                let checked = [];
+                let checked = Array.from(checks).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value);
+                
+                let res = await procureRes(checked);
 
-                checks.forEach((checkbox) => {
-                    if (checkbox.checked) {
-                        checked.push(checkbox.value);  
-                    }
-                });
-                console.log(checked)
-                let res = await procureRes(checked)
-                console.log(res)
-
-             
-
-               
+                // Update the prodContainer content here
+                prodContainer.innerHTML = res.data;
             });
         });
     });
 </script>
+
 
 
 

@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 import json
 from django.template.loader import render_to_string
+from functools import reduce
+from math import ceil
 
 
 
@@ -114,16 +116,63 @@ def user_validate(request,username,field):
 
 def filter_category(request):
     product = Product.objects.all()
+    not_found = False
+
     if request.method == 'POST':
-        # Assuming the JSON payload contains an array named 'categories'
-        json_data = json.loads(request.body.decode('utf-8'))
-        selected_categories = json_data.get('categories', [])
-        product = Product.objects.filter(category__id__in=selected_categories).distinct()
-    context = { "products": product }
+        try:
+            # Assuming the JSON payload contains an array named 'categories'
+            json_data = json.loads(request.body.decode('utf-8'))
+            selected_categories = json_data.get('categories', [])
+            product = Product.objects.filter(category__id__in=selected_categories).distinct()
+            not_found = False
+            if len(product)<1:
+                not_found = True
+            if len(selected_categories)<1:
+                product = Product.objects.all()
+                not_found = False
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": "Invalid JSON data"}, status=400)
+
+    context = {"products": product,"not_found": not_found}
+
     data = render_to_string("includes/ajax/productAjax.html", context)
-    print(data)
 
+
+    return JsonResponse({"data": data})
+
+
+def cart_page(request):
+    cart = Cart.objects.filter(user=request.user)
+
+    calculate_item_price = lambda x: (x.product.price * (x.product.discount / 100) ) * x.amount
     
+    total_price = reduce(lambda acc, item: acc + calculate_item_price(item), cart,0)
+
+    print(total_price)
 
 
-    return JsonResponse({"data":data})
+
+   
+    context["carts"]=cart
+    context['total_price']=ceil(total_price)
+    
+    return render(request,"cart.html",context)
+
+
+
+def cart_minus(request,id):
+    cart = Cart.objects.filter(id=id)
+    if cart.amount == 0:
+        cart.amount = 0
+    else:
+        cart.amount -= 1
+    cart.save()
+
+    return JsonResponse({'status':'success'})
+
+def cart_add(request,id):
+    cart = Cart.objects.filter(id=id)
+    cart.amount += 1
+    cart.save()
+    
+    return JsonResponse({'status':'success'})

@@ -3,6 +3,7 @@ from ckeditor.fields import RichTextField
 from django.utils.text import slugify
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -91,6 +92,9 @@ class Product(models.Model):
     product_information = RichTextField(blank=True,null=True)
     slug = models.SlugField(max_length=200,unique=True,null=True,blank=True)
 
+   
+    
+
 
  
 
@@ -131,3 +135,16 @@ class Product_images(models.Model):
     def __str__(self) -> str:
         return self.product.name
 
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField(default=1)
+
+    def __str__(self) -> str:
+        return self.user.username + ' - ' + self.product.name
+    
+    class Meta:
+        verbose_name = "Cart"
+        verbose_name_plural = "Cart"

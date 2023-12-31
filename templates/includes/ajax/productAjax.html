@@ -1,13 +1,36 @@
+{% load static %}
 {% load product_information %}
-{% for prod in product %}
 
-{{prod.name}}
+{% if not_found %}
+<div class="error-area pt-80 pb-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="error-info text-center">
+                    <div class="error-image text-center mb-50">
+                        <img src="{% static "assets/img/banner/404.png" %}" style="width:200px;height:200px;" alt="">
+                    </div>
+                    <div class="error-content">
+                        <h5>Page Not Found</h5>
+                        <p>Sorry, the page you've requested is not available. Please try searching for something else or return to Homepage.</p>
+                        <div class="error-button">
+                            <a href="{% url "home" %}" class="error-btn">Return to Homepage</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+
+{% else %}
+{% for prod in products %}
 <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
     <div class="product__item product__item-d">
         <div class="product__thumb fix">
             <div class="product-image w-img">
-                <a href="product-details.html">
+                <a href="{% url "product_detail" prod.slug %}">
       
                     <img src="{{prod.featured_image}}" style="width:165px;height:165px;" alt="product">
                 </a>
@@ -28,7 +51,7 @@
             </div>
         </div>
         <div class="product__content-3">
-            <h6><a href="product-details.html">{{prod.name|truncatechars:25}}</a></h6>
+            <h6><a href="{% url "product_detail" prod.slug %}">{{prod.name|truncatechars:25}}</a></h6>
             <div class="rating mb-5">
                 <ul>
                     <li><a href="#"><i class="fal fa-star"></i></a></li>
@@ -54,3 +77,4 @@
     </div>
 </div>
 {% endfor %}    
+{% endif %}

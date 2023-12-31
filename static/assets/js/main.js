@@ -278,7 +278,7 @@
 
 	////////////////////////////////////////////////////
 	// 21. Cart Plus Minus Js
-	$(".cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');
+	// $(".cart-plus-minus").append('<button class="dec qtybutton" id="minus{{forloop.counter}}">-</button><button class="inc qtybutton" id="minus{{forloop.counter}}">+</button>');
 	$(".qtybutton").on("click", function () {
 		var $button = $(this);
 		var oldValue = $button.parent().find("input").val();
