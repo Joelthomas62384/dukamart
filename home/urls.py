@@ -12,7 +12,8 @@ urlpatterns = [
     path('filter-category',views.filter_category,name="filter_category"),
     path('api/user/validate/<username>/<field>',views.user_validate,name="user_validate"),
     path('cart-page',views.cart_page,name="cart_page"),
-    path('cart-minus',views.cart_minus,name="cart_minus"),
-    path('cart-add',views.cart_add,name="cart_minus"),
+    path('cart-minus/<id>',views.cart_minus,name="cart_minus"),
+    path('cart-add/<id>',views.cart_add,name="cart_minus"),
+    path('cart-remove/<id>',views.cart_remove,name="cart_remove"),
 
 ]

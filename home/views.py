@@ -13,7 +13,7 @@ from math import ceil
 
 
 
-# Create your views here.
+# We create some of the model objects globally to avoid the rewriting of them
 slider = Slider.objects.all().order_by('-id')[:3]
 banner = Feature.objects.all().order_by('-id')[:3]
 category = Main_Category.objects.all()
@@ -29,8 +29,6 @@ context = {
 
 
 def home(request):
-   
-
     return render(request,'home.html', context)
 
 def product_detail(request,slug):
@@ -48,10 +46,11 @@ def register_page(request):
         if len(password)<4:
             messages.warning(request,"Password must be at least 4 characters")
             return redirect("register_page")
-        if User.objects.filter(username=username , email=email).exists:
+        if User.objects.filter(username=username , email=email).exists():
             messages.warning(request,"User already exists")
             return redirect("register_page")
-        user = User(username=username, email=email, password=password)
+        user = User(username=username, email=email,)
+        user.set_password(password)
         user.save()
         messages.success(request,f"User {username} Created Successfully")
         return redirect("register_page")
@@ -120,7 +119,6 @@ def filter_category(request):
 
     if request.method == 'POST':
         try:
-            # Assuming the JSON payload contains an array named 'categories'
             json_data = json.loads(request.body.decode('utf-8'))
             selected_categories = json_data.get('categories', [])
             product = Product.objects.filter(category__id__in=selected_categories).distinct()
@@ -131,7 +129,7 @@ def filter_category(request):
                 product = Product.objects.all()
                 not_found = False
         except json.JSONDecodeError as e:
-            return JsonResponse({"error": "Invalid JSON data"}, status=400)
+            return JsonResponse({"error": "Invalid JSON data"}, status=404)
 
     context = {"products": product,"not_found": not_found}
 
@@ -144,24 +142,18 @@ def filter_category(request):
 def cart_page(request):
     cart = Cart.objects.filter(user=request.user)
 
-    calculate_item_price = lambda x: (x.product.price * (x.product.discount / 100) ) * x.amount
+    calculate_item_price = lambda x: round((x.product.price * (x.product.discount / 100) ) * x.amount,2 )
     
     total_price = reduce(lambda acc, item: acc + calculate_item_price(item), cart,0)
-
-    print(total_price)
-
-
-
-   
     context["carts"]=cart
-    context['total_price']=ceil(total_price)
+    context['total_price']=total_price
     
     return render(request,"cart.html",context)
 
 
 
 def cart_minus(request,id):
-    cart = Cart.objects.filter(id=id)
+    cart = Cart.objects.get(product__id=id,user=request.user)
     if cart.amount == 0:
         cart.amount = 0
     else:
@@ -171,8 +163,24 @@ def cart_minus(request,id):
     return JsonResponse({'status':'success'})
 
 def cart_add(request,id):
-    cart = Cart.objects.filter(id=id)
-    cart.amount += 1
+    cart = Cart.objects.filter(product__id=id,user=request.user).first()
+    if cart is None:
+        cart = Cart(user=request.user,product=Product.objects.get(id=id),amount=1)
+        
+    else:
+        cart.amount += 1
     cart.save()
     
+    
     return JsonResponse({'status':'success'})
+
+
+def cart_remove(request,id):
+    cart_id = Cart.objects.get(id=id,user=request.user)
+
+    cart_id.delete()
+    cart = Cart.objects.filter(user=request.user)
+    calculate_item_price = lambda x: round((x.product.price * (x.product.discount / 100) ) * x.amount,2 )
+    
+    total_price = reduce(lambda acc, item: acc + calculate_item_price(item), cart,0)
+    return JsonResponse({'status':'success',"data":total_price})

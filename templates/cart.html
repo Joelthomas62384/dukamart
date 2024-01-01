@@ -49,20 +49,20 @@
                             </thead>
                             <tbody>
                                 {% for cart in carts %}
-                               <tr>
+                               <tr id ="t-{{cart.id}}">
                                   <td class="product-thumbnail"><a href="{% url "product_detail"  cart.product.slug %}"><img src="{{cart.product.featured_image}}" style="width:125px; height:125px" alt=""></a></td>
                                   <td class="product-name"><a href="{% url "product_detail"  cart.product.slug %}">{{cart.product.name|truncatewords:20}}</a></td>
-                                  <td class="product-price"><span class="amount" id="disprice-{{cart.id}}">₹{% discount_calculation cart.product.price cart.product.discount %}</span></td>
+                                  <td class="product-price"><span class="amount" id="disprice-{{cart.product.id}}">₹{% discount_calculation cart.product.price cart.product.discount %}</span></td>
                                   <td class="product-quantity">
                                     <div class="cart-plus-minus">
-                                        <input type="text" id="amount-{{cart.id}}" readonly value="{{ cart.amount }}">
-                                        <div class=" minusBtn dec qtybutton " id="minusBtn-{{cart.id}}">-</div>
-                                        <div class="inc qtybutton" id="plusBtn-{{cart.id}}" >+</div>
+                                        <input type="text" id="amount-{{cart.product.id}}" readonly value="{{ cart.amount }}">
+                                        <div class=" minusBtn dec qtybutton " id="minusBtn-{{cart.product.id}}">-</div>
+                                        <div class="inc qtybutton" id="plusBtn-{{cart.product.id}}" >+</div>
                                     </div>
                                     
                                   </td>
-                                  <td class="product-subtotal"><span class="amount-total" id="total-{{cart.id}}">₹{% discount_calculation cart.product.price cart.product.discount|mult:cart.amount %}</span></td>
-                                  <td class="product-remove"><a href="#"><i class="fa fa-times"></i></a></td>
+                                  <td class="product-subtotal"><span class="amount-total"  style="width:20px; " id="total-{{cart.product.id}}">₹{% discount_calculation cart.product.price cart.product.discount|mult:cart.amount %}</span></td>
+                                  <td class="product-remove"><div class="rem"><i class="fa fa-times" id="rem{{cart.id}}"></i></div></td>
                                </tr>
                                {% endfor %}
                               
@@ -88,8 +88,8 @@
                             <div class="cart-page-total">
                                <h2>Cart totals</h2>
                                <ul class="mb-20">
-                                  <li>Subtotal <span class="total_price">₹{{total_price}}</span></li>
-                                  <li>Total <span class="total_price">₹{{total_price}}</span></li>
+                                  <li>Subtotal <span  class="total_price">₹{{total_price}}</span></li>
+                                  <li>Total <span  class="total_price">₹{{total_price}}</span></li>
                                </ul>
                                <a class="tp-btn-h1" href="checkout.html">Proceed to checkout</a>
                             </div>
@@ -107,72 +107,109 @@
 
 {% block js %}
 <script>
-    let totalPriceChange = ()=>{
-    let amount = document.querySelectorAll('.amount-total');
-    let arr = [];
-    amount.forEach(function(amount) {
-        let num  = parseInt(amount.innerText.toString().replace("₹",""));
-        arr.push(num);
-    })
-    console.log(arr);
-    sum_arr = arr.reduce((acc,current) =>{return acc + current},0)
-    console.log(sum_arr);
+   let minusCartUrl = '/cart-minus';
+   let addToCart = async (id) => {
+      let addToCartUrl = '/cart-add';
+      let url = addToCartUrl + "/" + id;
+      let response = await fetch(url);
+      return response.json();
+   }
 
-    let total_price = document.querySelectorAll('.total_price');
-    total_price.forEach(function(total_price) {
-       
-        total_price.innerText = "₹ " + sum_arr;
-    })
+   let minusToCart = async (id) => {
+      let url = minusCartUrl + "/" + id;
+      let response = await fetch(url);
+      return response.json();
+   }
 
-    }
-    {% comment %} totalPriceChange(); {% endcomment %}
-    document.addEventListener('DOMContentLoaded', function () {
-        let minusBtn = document.querySelectorAll(".dec");
-        let plusBtn = document.querySelectorAll(".inc");
+   let totalPriceChange = () => {
+      let amount = document.querySelectorAll('.amount-total');
+      let arr = [];
+      amount.forEach(function (amount) {
+         let num = parseFloat(amount.innerText.toString().replace("₹", ""));
+         arr.push(num);
+      });
+      sum_arr = arr.reduce((acc, current) => { return acc + current }, 0);
 
-        function updateAmountAndTotal(button, operation) {
-            let id = button.id;
-            let counter = id.split('-')[1];
-            let amountId = "amount-" + counter;
-            let totalId = "total-" + counter;
-            let disprice = "disprice-" + counter;
+      let total_price = document.querySelectorAll('.total_price');
+      total_price.forEach(function (total_price) {
+         total_price.innerText = "₹ " + sum_arr;
+      });
+   }
 
-            let amountElement = document.getElementById(amountId);
-            let totalElement = document.getElementById(totalId);
-            let dispriceElement = document.getElementById(disprice);
+   document.addEventListener('DOMContentLoaded', function () {
+      let minusBtn = document.querySelectorAll(".dec");
+      let plusBtn = document.querySelectorAll(".inc");
+      let remBtn = document.querySelectorAll(".rem");
 
-            let amountValue = parseInt(amountElement.value);
-            let totalPrice = parseInt(totalElement.innerText.replace('₹', ''));
-            let dispriceValue = parseInt(dispriceElement.innerText.replace('₹', ''));
+      async function updateAmountAndTotal(button, operation) {
+         let id = button.id;
+         let counter = id.split('-')[1];
+         let amountId = "amount-" + counter;
+         let totalId = "total-" + counter;
+         let disprice = "disprice-" + counter;
 
-            if (operation === 'minus' && amountValue >= 0) {
-                
-                totalPrice = amountValue * dispriceValue/* your logic for price */;
-                
-            } else if (operation === 'plus') {
-                totalPrice = amountValue * dispriceValue/* your logic for price */;
+         let amountElement = document.getElementById(amountId);
+         let totalElement = document.getElementById(totalId);
+         let dispriceElement = document.getElementById(disprice);
+
+         let amountValue = parseFloat(amountElement.value);
+         let totalPrice = parseFloat(dispriceElement.innerText.replace('₹', ''));
+
+         if (operation === 'minus' && amountValue >= 0) {
+            try {
+               let data = await minusToCart(counter);
+               totalPrice = amountValue * totalPrice; /* your logic for price */
+            } catch (error) {
+               console.error('Error during minus operation:', error);
+            }
+         } else if (operation === 'plus') {
+            try {
+               let data = await addToCart(counter);
+               totalPrice = amountValue * totalPrice; /* your logic for price */
+            } catch (error) {
+               console.error('Error during plus operation:', error);
+            }
+         }
+
+         amountElement.value = amountValue;
+         totalElement.innerText = '₹' + totalPrice;
+         totalPriceChange();
+      }
+
+      minusBtn.forEach(function (btn) {
+         btn.addEventListener("click", function () {
+            updateAmountAndTotal(btn, 'minus');
+         });
+      });
+
+      plusBtn.forEach(function (btn) {
+         btn.addEventListener("click", function () {
+            updateAmountAndTotal(btn, 'plus');
+         });
+      });
+
+      let total_price = document.querySelectorAll('.total_price');
+      remBtn.forEach((btn) => {
+         btn.addEventListener('click', async (e) => {
+            let id = e.target.id.toString().replace("rem","")
+            let tableid = document.getElementById(`t-${id}`) 
+            try{
+            let data = await fetch('cart-remove/'+id)
+            let res = await data.json()
+            tableid.remove()
+            total_price.forEach(function (total_price) {
+               total_price.innerText = "₹ " + res.data;
+            });
+ style="width:20px;"            
+
+            }catch{
+               console.error("500 Internal Servr Error")
             }
 
-            amountElement.value = amountValue;
-            totalElement.innerText = '₹' + totalPrice;
-            totalPriceChange()
-
-        }
-
-
-
-        minusBtn.forEach(function (btn) {
-            btn.addEventListener("click", function () {
-                updateAmountAndTotal(btn, 'minus');
-            });
-        });
-
-        plusBtn.forEach(function (btn) {
-            btn.addEventListener("click", function () {
-                updateAmountAndTotal(btn, 'plus');
-            });
-        });
-    });
+         });
+      });
+   });
 </script>
 {% endblock js %}
+
 

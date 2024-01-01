@@ -97,9 +97,9 @@ body{
                     </div>
                     <div class="cart-option mb-15">
                         <div class="product-quantity mr-20">
-                            <div class="cart-plus-minus p-relative"><input type="text" value="1"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
+                            <div class="cart-plus-minus p-relative"><input readonly type="text" value="1"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
                         </div>
-                        <a href="{% url "cart_page"   %}" class="cart-btn">Add to Cart</a>
+                        <a onclick="addToCart('{{product.id}}')" class="cart-btn">Add to Cart</a>
                     </div>
                     <div class="details-meta">
                         <div class="d-meta-left">
@@ -372,10 +372,10 @@ body{
                                 <form action="#">
                                 <div class="pro-quan-area d-lg-flex align-items-center">
                                     <div class="product-quantity mr-20 mb-25">
-                                        <div class="cart-plus-minus p-relative"><input type="text" value="1" /></div>
+                                        <div class="cart-plus-minus p-relative"><input readonly type="text" value="1" /></div>
                                     </div>
                                     <div class="pro-cart-btn mb-25">
-                                        <button class="cart-btn" type="submit">Add to cart</button>
+                                        <button class="cart-btn" on type="submit">Add to cart</button>
                                     </div>
                                 </div>
                                 </form>
@@ -406,4 +406,18 @@ body{
 </div>
 
 
+
 {% endblock content %}
+
+{% block js %}
+<script>
+    let addToCart = async (id)=>{
+        let addToCartUrl = '/cart-add'
+        let url = addToCartUrl +"/"+id;
+        let response = await fetch(url);
+        return response.json();
+  
+  
+     }
+</script>
+{% endblock js %}
