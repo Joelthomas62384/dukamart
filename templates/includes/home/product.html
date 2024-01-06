@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="product__add-cart text-center">
-                                <button type="button" class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
+                                <button type="button"  onclick="addToCart('{{product.id}}')" class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
                                 Add to Cart
                                 </button>
                             </div>
@@ -171,7 +171,8 @@
                                 <form action="#">
                                 <div class="pro-quan-area d-lg-flex align-items-center">
                                     <div class="product-quantity mr-20 mb-25">
-                                        <div class="cart-plus-minus p-relative"><input type="text" value="1" /></div>
+                                        <div class="cart-plus-minus p-relative"><input readonly type="text" value="{{prod.cart_set.first.amount | default:'0'}}"><div class="dec qtybutton" onclick="minusCart('{{prod.id}}')">-</div><div class="inc qtybutton" onclick="addToCart('{{prod.id}}')">+</div></div>
+                        </div>
                                     </div>
                                     <div class="pro-cart-btn mb-25">
                                         <button class="cart-btn" type="submit">Add to cart</button>

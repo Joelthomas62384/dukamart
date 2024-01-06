@@ -62,3 +62,27 @@
 
 
 {% endblock content %}
+
+{% block js %}
+<script>
+    let addToCart = async (id)=>{
+        let addToCartUrl = '/cart-add'
+        let url = addToCartUrl +"/"+id;
+        let response = await fetch(url);
+        showNotification("Added to cart successfully");
+        return response.json();
+
+  
+  
+     }
+     let minusCart = async (id)=>{
+        let minusCartUrl = '/cart-minus'
+        let url = minusCartUrl +"/"+id;
+        let response = await fetch(url);
+        showNotification("Reduced from cart successfully");
+
+        return response.json();
+     }
+</script>
+
+{% endblock js %}

@@ -18,11 +18,13 @@ slider = Slider.objects.all().order_by('-id')[:3]
 banner = Feature.objects.all().order_by('-id')[:3]
 category = Main_Category.objects.all()
 product = Product.objects.all()
+cart_count = Cart.objects.all()
 context = {
     "slider":slider,
     'banner':banner,
     'category':category,
     'product':product,
+    "cart_count":cart_count
 }
 
 
@@ -84,7 +86,8 @@ def logout_user(request):
 def category_wise(request):
     product = Product.objects.all()
     category = Category.objects.all()
-    context = { "products": product, "category": category    }
+    context = { "products": product, "category": category  ,
+    "cart_count":cart_count  }
     return render(request, "product-view.html", context)
 
     
