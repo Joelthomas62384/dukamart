@@ -169,6 +169,7 @@ def cart_add(request,id):
         
     else:
         cart.amount += 1
+    # print(cart.amount)
     cart.save()
     
     

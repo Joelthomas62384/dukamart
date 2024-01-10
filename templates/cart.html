@@ -178,6 +178,7 @@
 
       minusBtn.forEach(function (btn) {
          btn.addEventListener("click", function () {
+            console.log(btn.id)
             updateAmountAndTotal(btn, 'minus');
          });
       });
