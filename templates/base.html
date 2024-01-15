@@ -36,6 +36,7 @@
     <div class="body-overlay"></div>
     <!-- offcanvas area end -->
     <main>
+      {% include "includes/notification.html" %}
         {% block content %}
         
         
@@ -66,8 +67,19 @@
       <script src="{% static 'assets/js/imagesloaded-pkgd.js' %}"></script>
       <script src="{% static 'assets/js/ajax-form.js' %}"></script>
       <script src="{% static 'assets/js/main.js' %}"></script>
-      {% block js %}{% endblock js %}
+     
       {% include "includes/footer.html" %}
+      <script>
+        function showNotification(message) {
+            // Set the message in the toast body
+            document.getElementById('notificationMessage').innerText = message;
+            
+            // Show the notification
+            $('#notificationToast').toast('show');
+            $('#notificationToast').css('display', 'block'); // or $('#notificationToast').show();
+        }
+      </script>
+      {% block js %}{% endblock js %}
    </body>
 
 </html>

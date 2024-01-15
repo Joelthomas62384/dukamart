@@ -151,7 +151,7 @@
                                             </div>
                                         </div>
                                         <div class="product__add-cart-s text-center">
-                                            <button type="button" class="cart-btn d-flex mb-10 align-items-center justify-content-center w-100">
+                                            <button type="button"  onclick="addToCart('{{product.id}}')" class="cart-btn d-flex mb-10 align-items-center justify-content-center w-100">
                                             Add to Cart
                                             </button>
                                             <button type="button" class="wc-checkout d-flex align-items-center justify-content-center w-100" data-bs-toggle="modal" data-bs-target="#productModalId{{forloop.counter}}">
@@ -281,12 +281,10 @@
                             </div>
                             <div class="product__modal-form">
                                 <form action="#">
-                                <div class="pro-quan-area d-lg-flex align-items-center">
-                                   
-                                    <div class="pro-cart-btn mb-25">
-                                        <a class=" qtybutton inc cart-btn"  onclick="addToCart('{{product.id}}')"  type="submit">Add to cart</a>
+                                    <div class="cart-option mb-15">
+                                        
+                                        <a onclick="addToCart('{{product.id}}')"  class="cart-btn">Add to Cart</a>
                                     </div>
-                                </div>
                                 </form>
                             </div>
                             <div class="product__stock mb-30">
@@ -362,6 +360,8 @@
         let addToCartUrl = '/cart-add'
         let url = addToCartUrl +"/"+id;
         let response = await fetch(url);
+        showNotification("Added to cart successfully");
+
         return response.json();
   
   

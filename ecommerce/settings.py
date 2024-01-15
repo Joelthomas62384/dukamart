@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.humanize',
     'django.contrib.staticfiles',
     'home',
     'ckeditor',
@@ -186,5 +187,7 @@ CKEDITOR_CONFIGS = {
 
 
 
+KEY = "rzp_test_ulCj0RrGkpHTDJ"
+SECRET = "FoHISQ34g0XlPOjqunNTdmHp"
 
 

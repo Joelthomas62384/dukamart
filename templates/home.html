@@ -62,3 +62,40 @@
 
 
 {% endblock content %}
+
+{% block js %}
+<script>
+   
+   let addToCart = async (id,btn) => {
+    let addToCartUrl = '/cart-add'
+    let url = addToCartUrl + "/" + id;
+    let response = await fetch(url);
+    
+    // Get the input element
+    let inp = document.getElementById(`in${id}`);
+
+    // Increment the value as a number
+    if(btn){
+    inp.value = parseInt(inp.value) + 1;
+    }
+    let count = document.getElementById('count');
+    res = await response.json()
+    count.innerHTML = res.count;
+
+    showNotification("Added to cart successfully");
+    return await res;
+}
+     let minusCart = async (id)=>{
+        let minusCartUrl = '/cart-minus'
+        let url = minusCartUrl +"/"+id;
+        let response = await fetch(url);
+        let count = document.getElementById('count');
+        res = await response.json()
+        count.innerHTML = res.count;
+        showNotification("Reduced from cart successfully");
+        
+        return res;
+     }
+</script>
+
+{% endblock js %}

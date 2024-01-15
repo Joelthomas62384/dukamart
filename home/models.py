@@ -8,6 +8,14 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class UserAddress(models.Model):
+    user= models.OneToOneField(User, related_name='user_address',on_delete=models.CASCADE)
+    address = models.TextField(blank=True, null=True)
+    phone = models.CharField(max_length=20,null=True)
+
+    def __str__(self) -> str:
+        return self.user.username
+
 
 class Slider(models.Model):
     choices = (
@@ -148,3 +156,54 @@ class Cart(models.Model):
     class Meta:
         verbose_name = "Cart"
         verbose_name_plural = "Cart"
+
+
+
+class Orders(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    products = models.ManyToManyField("Product", through="OrderProducts", related_name="orders")
+    address = models.TextField(blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    total_price = models.PositiveIntegerField(default=0)
+    is_paid = models.BooleanField(default=False)
+    razorpay_order_id = models.CharField(max_length=255, blank=True, null=True)
+    razorpay_payment_id = models.CharField(max_length=255, blank=True, null=True)
+    razorpay_payment_signature = models.CharField(max_length=255, blank=True, null=True)
+    delivered = models.BooleanField(default=False)
+    
+
+    def __str__(self) -> str:
+        return self.user.username
+    
+    class Meta:
+        verbose_name = "Order"
+        verbose_name_plural = "Orders"
+
+class OrderProducts(models.Model):
+    order = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    product = models.ForeignKey("Product", on_delete=models.CASCADE)
+    total = models.PositiveIntegerField(default=0)
+
+    def __str__(self) -> str:
+        return f"{self.order.user.username}-{self.product.name}"
+
+class OrderTracking(models.Model):
+    order = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    reached = models.CharField(max_length=220,null=True,blank=True)
+
+    def __str__(self) -> str:
+        return self.order.user.username
+    
+
+
+
+class Comments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    comment = models.TextField(null=True,blank=True)
+    verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+
+
+    def __str__(self) -> str:
+        return self.user.username + ", " + self.product.name[:30]

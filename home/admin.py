@@ -29,8 +29,22 @@ class ProductAdmin(admin.ModelAdmin):
         return obj.name[:20] 
     sliced_name.short_description = 'Sliced Name'
 
+class OrderProductsTabular(admin.TabularInline):
+
+    model = OrderProducts
 
 
+class OrderTrackingTabular(admin.TabularInline):
+    model=OrderTracking
+
+class OrderAdmin(admin.ModelAdmin):
+    inlines = [OrderProductsTabular, OrderTrackingTabular]
+
+ 
+
+
+
+admin.site.register(UserAddress)
 admin.site.register(Slider)
 admin.site.register(Feature)
 admin.site.register(Main_Category)
@@ -38,6 +52,8 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Category,CategoryAdmin)
 admin.site.register(Section)
 admin.site.register(Cart)
+admin.site.register(Orders, OrderAdmin)
+admin.site.register(Comments)
 
 
 

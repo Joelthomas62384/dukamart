@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load static %}
+{% load product_information %}
+
+
+{% block content %}
+
+
+<div class="page-banner-area page-banner-height-2" data-background="{% static "assets/img/banner/page-banner-4.jpg" %}">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-banner-content text-center">
+                    <h4 class="breadcrumb-title">Checkout</h4>
+                    <div class="breadcrumb-two">
+                        <nav>
+                           <nav class="breadcrumb-trail breadcrumbs">
+                              <ul class="breadcrumb-menu">
+                                 <li class="breadcrumb-trail">
+                                    <a href="index.html"><span>Home</span></a>
+                                 </li>
+                                 <li class="trail-item">
+                                    <span>Checkout</span>
+                                 </li>
+                              </ul>
+                           </nav> 
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- page-banner-area-end -->
+
+<!-- coupon-area-start -->
+<section class="coupon-area pt-120 pb-30">
+    <div class="container">
+    <div class="row">
+    
+    </div>
+</div>
+</section>
+<!-- coupon-area-end -->
+
+<!-- checkout-area-start -->
+<section class="checkout-area pb-85">
+    <div class="container">
+        <form action="{% url "checkout" %}" method='post'>
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-12">
+                    
+                <div class="col-12">
+                    <div class="your-order mb-30 ">
+                        <h3>Your order</h3>
+                        <div class="your-order-table table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="product-name">Product</th>
+                                        <th class="product-total">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pro in cart_count %}
+                                    <tr class="cart_item">
+                                        <td class="product-name">
+                                            {{pro.product.name|truncatechars:50}} <strong class="product-quantity"> × {{pro.amount}}</strong>
+                                        </td>
+                                        <td class="product-total">
+                                            <span class="amount">₹{% checkout_price pro.product.price pro.product.discount pro.amount %}</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                                <tfoot>
+                                    <tr class="cart-subtotal">
+                                        <th>Cart Subtotal</th>
+                                        <td><span class="amount">₹{{total_price}}</span></td>
+                                    </tr>
+                                    
+                                    <tr class="order-total">
+                                        <th>Order Total</th>
+                                        <td><strong><span class="amount">₹{{total_price}}</span></strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="payment-method">
+                         
+                            
+                            
+                            <div class="order-button-payment mt-20">
+                            <button id="rzp-button1" type="submit" class="tp-btn-h1">Place order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     
+    </div>
+</section>
+<!-- checkout-area-end -->
+
+<!-- cta-area-start -->
+<section class="cta-area d-ldark-bg pt-55 pb-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="cta-item cta-item-d mb-30">
+                    <h5 class="cta-title">Follow Us</h5>
+                    <p>We make consolidating, marketing and tracking your social media website easy.</p>
+                    <div class="cta-social">
+                        <div class="social-icon">
+                            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+                            <a href="#" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="rss"><i class="fas fa-rss"></i></a>
+                            <a href="#" class="dribbble"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="cta-item mb-30">
+                    <h5 class="cta-title">Sign Up To Newsletter</h5>
+                    <p>Join 60.000+ subscribers and get a new discount coupon  on every Saturday.</p>
+                    <div class="subscribe__form">
+                        <form action="#">
+                            <input type="email" placeholder="Enter your email here...">
+                            <button>subscribe</button>
+                        </form action="{% url "checkout" %}" method="post">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="cta-item mb-30">
+                    <h5 class="cta-title">Download App</h5>
+                    <p>DukaMarket App is now available on App Store & Google Play. Get it now.</p>
+                    <div class="cta-apps">
+                        <div class="apps-store">
+                            <a href="#"><img src="assets/img/brand/app_ios.png" alt=""></a>
+                            <a href="#"><img src="assets/img/brand/app_android.png" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock content %}
+
+{% block js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_ulCj0RrGkpHTDJ",
+    "amount": "{{ payment.amount }}",
+    "currency": "INR",
+    "name": "Ecommerce",
+    "description": "Ecommerce",
+    "order_id": "{{ payment.id }}",
+    "handler": function (response) {
+        window.location.href = `/success/?razorpay_payment_id=${response.razorpay_payment_id}&razorpay_order_id=${response.razorpay_order_id}&razorpay_signature=${response.razorpay_signature}`
+    },
+    "theme": {
+        "color": "#3399cc"
+    },
+    "modal": {
+        "ondismiss": function () {
+            alert("Payment cancelled");
+        }
+    },
+    "upi": {
+        "flow": "collect", // Set the UPI flow to 'collect' for requesting payment
+        "flowMode": "intent"
+    }
+};
+
+var rzp1 = new Razorpay(options);
+
+rzp1.on('payment.failed', function (response) {
+    alert(response.error.code);
+    alert(response.error.description);
+    
+});
+
+document.getElementById('rzp-button1').onclick = function (e) {
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+{% endblock js %}

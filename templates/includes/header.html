@@ -73,14 +73,26 @@
                         </div>
                         <div class="col-xl-4 col-lg-5 col-md-8 col-sm-8">
                             <div class="header-action">
+                                {% if user.is_authenticated %}
                                 <div class="block-userlink">
-                                    <a class="icon-link" href="my-account.html">
+                                    <a class="icon-link" href="{% url "logout_user" %}">
                                     <i class="flaticon-user"></i>
                                     <span class="text">
-                                    <span class="sub">Login </span>
+                                    <span class="sub">{{user.username|title}}</span>
+                                    Logout </span>
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="block-userlink">
+                                    <a class="icon-link" href="{% url "register_page" %}">
+                                    <i class="flaticon-user"></i>
+                                    <span class="text">
+                                    <span class="sub">Login</span>
                                     My Account </span>
                                     </a>
                                 </div>
+
+                                {% endif %}
                                 <div class="block-wishlist action">
                                     <a class="icon-link" href="wishlist.html">
                                     <i class="flaticon-heart"></i>
@@ -93,53 +105,12 @@
                                 <div class="block-cart action">
                                     <a class="icon-link" href="{% url "cart_page"   %}">
                                     <i class="flaticon-shopping-bag"></i>
-                                    <span class="count">1</span>
+                                    <span class="count" id="count">{{cart_count.count}}</span>
                                     <span class="text">
-                                    <span class="sub">Your Cart:</span>
-                                    $00.00 </span>
+                                    <span class="sub">Your Cart</span>
+                                  </span>
                                     </a>
-                                    <div class="cart">
-                                        <div class="cart__mini">
-                                            <ul>
-                                                <li>
-                                                  <div class="cart__title">
-                                                    <h4>Your Cart</h4>
-                                                    <span>(1 Item in Cart)</span>
-                                                  </div>
-                                                </li>
-                                                <li>
-                                                  <div class="cart__item d-flex justify-content-between align-items-center">
-                                                    <div class="cart__inner d-flex">
-                                                      <div class="cart__thumb">
-                                                        <a href="product-details.html">
-                                                          <img src="{% static 'assets/img/cart/20.jpg' %}" alt="">
-                                                        </a>
-                                                      </div>
-                                                      <div class="cart__details">
-                                                        <h6><a href="product-details.html"> Samsung C49J89: £875, Debenhams Plus  </a></h6>
-                                                        <div class="cart__price">
-                                                          <span>$255.00</span>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="cart__del">
-                                                        <a href="#"><i class="fal fa-times"></i></a>
-                                                    </div>
-                                                  </div>
-                                                </li>
-                                                <li>
-                                                  <div class="cart__sub d-flex justify-content-between align-items-center">
-                                                    <h6>Subtotal</h6>
-                                                    <span class="cart__sub-total">$255.00</span>
-                                                  </div>
-                                                </li>
-                                                <li>
-                                                    <a href="{% url "cart_page"   %}" class="wc-cart mb-10">View cart</a>
-                                                    <a href="checkout.html" class="wc-checkout">Checkout</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -195,8 +166,9 @@
                                 <ul>
                                     <li>
                                         <a href="{% url "home" %}" class="active">Home </a>
-                                       
-                                    <li><a href="about.html">About Us</a></li>
+                                    </li> 
+                                    {% comment %} <li><a href="about.html">About Us</a></li> {% endcomment %}
+                                    <li><a href="{% url "order_page" %}">orders</a></li>
                                     
                                 </ul>
                             </nav>

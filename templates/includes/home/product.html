@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             <div class="product__content">
-                                <h6><a href="product-details.html">{{prod.name|truncatewords:8}}</a></h6>
+                                <h6><a href="{{prod.slug}}">{{prod.name|truncatewords:8}}</a></h6>
                                
                                 <div class="price mb-10">
                                     <del>&#8377; {{prod.price}}</del> <span>&#8377; {% discount_calculation prod.price prod.discount %}</span>
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="product__add-cart text-center">
-                                <button type="button" class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
+                                <button type="button"  onclick="addToCart('{{prod.id}}')" class="cart-btn product-modal-sidebar-open-btn d-flex align-items-center justify-content-center w-100">
                                 Add to Cart
                                 </button>
                             </div>
@@ -134,7 +134,7 @@
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="product__modal-content">
-                            <h4><a href="product-details.html">{{prod.name|truncatewords:12}}</a></h4>
+                            <h4><a href="{{prod.slug}}">{{prod.name|truncatewords:12}}</a></h4>
                             <div class="product__review d-sm-flex">
                                 <div class="rating rating__shop mb-10 mr-30">
                                 <ul>
@@ -170,11 +170,9 @@
                             <div class="product__modal-form">
                                 <form action="#">
                                 <div class="pro-quan-area d-lg-flex align-items-center">
-                                    <div class="product-quantity mr-20 mb-25">
-                                        <div class="cart-plus-minus p-relative"><input type="text" value="1" /></div>
-                                    </div>
+                                    
                                     <div class="pro-cart-btn mb-25">
-                                        <button class="cart-btn" type="submit">Add to cart</button>
+                                        <div class="cart-btn " style="cursor: pointer;" onclick="addToCart('{{prod.id}}','btn')">Add to cart</div>
                                     </div>
                                 </div>
                                 </form>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load product_information %}
+{% load humanize %}
 
 
 
@@ -57,7 +58,7 @@ body{
 
                             <div class="tab-pane fade show active" id="thumb{{product.product_images_set.first.id}}" role="tabpanel" aria-labelledby="thumb{{product.product_images_set.first.id}}-tab">
                                 <div class="product__details-nav-thumb w-img">
-                                    <img src="{{product.product_images_set.first.image}}" style="height:500px;width:400px;" alt="">
+                                    <img src="{{product.product_images_set.first.image}}" style="height:500px;width:350px;" alt="">
                                 </div>
                             </div>
                             {% for image in product.product_images_set.all|slice:"1:" %}
@@ -97,9 +98,14 @@ body{
                     </div>
                     <div class="cart-option mb-15">
                         <div class="product-quantity mr-20">
-                            <div class="cart-plus-minus p-relative"><input readonly type="text" value="1"><div class="dec qtybutton">-</div><div class="inc qtybutton">+</div></div>
+                            <div class="cart-plus-minus p-relative">
+                                
+                                <input id="in{{product.id}}" readonly type="text" value="{{cart.amount|default:'0'}}">
+
+
+                                <div class="dec qtybutton" onclick="minusCart('{{product.id}}')">-</div><div class="inc qtybutton" onclick="addToCart('{{product.id}}')">+</div></div>
                         </div>
-                        <a onclick="addToCart('{{product.id}}')" class="cart-btn">Add to Cart</a>
+                        <a onclick="addToCart('{{product.id}}','btn')"  class="cart-btn">Add to Cart</a>
                     </div>
                     <div class="details-meta">
                         <div class="d-meta-left">
@@ -141,20 +147,20 @@ body{
                 <div class="product__details-des-tab">
                     <ul class="nav nav-tabs" id="productDesTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link active" id="des-tab" data-bs-toggle="tab" data-bs-target="#des" type="button" role="tab" aria-controls="des" aria-selected="true">Description </button>
+                          <button class="nav-link " id="des-tab" data-bs-toggle="tab" data-bs-target="#des" type="button" role="tab" aria-controls="des" aria-selected="true">Description </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="aditional-tab" data-bs-toggle="tab" data-bs-target="#aditional" type="button" role="tab" aria-controls="aditional" aria-selected="false">Additional information</button>
                           </li>
                         <li class="nav-item" role="presentation">
-                          <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">Reviews (1) </button>
+                          <button class="nav-link active" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab" aria-controls="review" aria-selected="false">Reviews (1) </button>
                         </li>
                       </ul>
                 </div>
             </div>
         </div>
         <div class="tab-content" id="prodductDesTaContent">
-            <div class="tab-pane fade active show" id="des" role="tabpanel" aria-labelledby="des-tab">
+            <div class="tab-pane fade " id="des" role="tabpanel" aria-labelledby="des-tab">
                 <div class="product__details-des-wrapper">
                     {{product.product_information|safe}}
                 </div>
@@ -172,46 +178,30 @@ body{
                     </ul>
                  </div>
             </div>
-            <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+            <div class="tab-pane fade active show" id="review" role="tabpanel" aria-labelledby="review-tab">
                 <div class="product__details-review">
                     <div class="row">
-                        <div class="col-xl-4">
-                            <div class="review-rate">
-                                <h5>5.00</h5>
-                                <div class="review-star">
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                </div>
-                                <span class="review-count">01 Review</span>
-                            </div>
-                        </div>
+                        
                         <div class="col-xl-8">
                             <div class="review-des-infod">
-                                <h6>1 review for "<span>Wireless Bluetooth Over-Ear Headphones</span>"</h6>
+                                <h6>1 review for "<span>{{product.name|truncatechars:40}}</span>"</h6>
                                 <div class="review-details-des">
-                                    <div class="author-image mr-15">
-                                        <a href="#"><img src="assets/img/author/author-sm-1.jpg" alt=""></a>
-                                    </div>
+                                    {% for comment in comments %}
                                     <div class="review-details-content">
-                                        <div class="str-info">
-                                            <div class="review-star mr-15">
-                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                <a href="#"><i class="fas fa-star"></i></a>
-                                                <a href="#"><i class="fas fa-star"></i></a>
-                                            </div>
-                                            <div class="add-review-option">
-                                                <a href="#">Add Review</a>
-                                            </div>
+                                       
+                                        <div class="my-2">
+                                        <div class="name-date mb-3">
+                                            <h6> {{comment.user.username}} – <span> {{comment.created_at|timesince}} 
+                                                {% if comment.verified %}
+                                                <span class="badge bg-secondary text-white">Verified Purchaser</span>
+                                                {% endif %}
+
+                                                
+                                            </span></h6>
                                         </div>
-                                        <div class="name-date mb-30">
-                                            <h6> admin – <span> May 27, 2021</span></h6>
-                                        </div>
-                                        <p>A light chair, easy to move around the dining table and about the room. Duis aute irure dolor in reprehenderit in <br> voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                        <p>{{comment.comment}}</p>
+                                    </div>
+                                    {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -222,43 +212,20 @@ body{
                             <div class="product__details-comment ">
                                 <div class="comment-title mb-20">
                                    <h3>Add a review</h3>
-                                   <p>Your email address will not be published. Required fields are marked *</p>
+                                   
                                 </div>
-                                <div class="comment-rating mb-20">
-                                   <span>Overall ratings</span>
-                                   <ul>
-                                      <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                      <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                      <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                      <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                      <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                   </ul>
-                                </div>
+                                
                                 <div class="comment-input-box">
-                                   <form action="#">
+                                   <form action="{% url "add_comment" %}" method="post">
+                                    {% csrf_token %}
                                       <div class="row">
-                                        <div class="col-xxl-6 col-xl-6">
-                                            <div class="comment-input">
-                                               <input type="text" placeholder="Your Name">
-                                            </div>
-                                         </div>
-                                         <div class="col-xxl-6 col-xl-6">
-                                            <div class="comment-input">
-                                               <input type="email" placeholder="Your Email">
-                                            </div>
+                                        <input type="text" name="id" value="{{product.id}}" hidden>
+                                        
+                                         <div class="col-xxl-12">
+                                               <textarea placeholder="Your review" name="comment" class="comment-input comment-textarea" required></textarea>
                                          </div>
                                          <div class="col-xxl-12">
-                                               <textarea placeholder="Your review" class="comment-input comment-textarea"></textarea>
-                                         </div>
-                                         <div class="col-xxl-12">
-                                            <div class="comment-agree d-flex align-items-center mb-25">
-                                               <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                                  <label class="form-check-label" for="flexCheckDefault">
-                                                   Save my name, email, and website in this browser for the next time I comment.
-                                                  </label>
-                                                </div>
-                                            </div>
+                                            
                                          </div>
                                          <div class="col-xxl-12">
                                             <div class="comment-submit">
@@ -278,146 +245,44 @@ body{
 </div>
 <!-- product-details-des-end -->
 
-<!-- shop modal start -->
-<div class="modal fade" id="productModalId" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered product__modal" role="document">
-        <div class="modal-content">
-            <div class="product__modal-wrapper p-relative">
-                <div class="product__modal-close p-absolute">
-                    <button data-bs-dismiss="modal"><i class="fal fa-times"></i></button>
-                </div>
-                <div class="product__modal-inner">
-                    <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="product__modal-box">
-                            <div class="tab-content" id="modalTabContent">
-                                <div class="tab-pane fade show active" id="nav1" role="tabpanel" aria-labelledby="nav1-tab">
-                                    <div class="product__modal-img w-img">
-                                        <img src="assets/img/quick-view/quick-view-1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="nav2" role="tabpanel" aria-labelledby="nav2-tab">
-                                    <div class="product__modal-img w-img">
-                                        <img src="assets/img/quick-view/quick-view-2.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="nav3" role="tabpanel" aria-labelledby="nav3-tab">
-                                    <div class="product__modal-img w-img">
-                                        <img src="assets/img/quick-view/quick-view-3.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="nav4" role="tabpanel" aria-labelledby="nav4-tab">
-                                    <div class="product__modal-img w-img">
-                                        <img src="assets/img/quick-view/quick-view-4.jpg" alt="">
-                                    </div>
-                                </div>
-                                </div>
-                            <ul class="nav nav-tabs" id="modalTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="nav1-tab" data-bs-toggle="tab" data-bs-target="#nav1" type="button" role="tab" aria-controls="nav1" aria-selected="true">
-                                        <img src="assets/img/quick-view/quick-nav-1.jpg" alt="">
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="nav2-tab" data-bs-toggle="tab" data-bs-target="#nav2" type="button" role="tab" aria-controls="nav2" aria-selected="false">
-                                    <img src="assets/img/quick-view/quick-nav-2.jpg" alt="">
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="nav3-tab" data-bs-toggle="tab" data-bs-target="#nav3" type="button" role="tab" aria-controls="nav3" aria-selected="false">
-                                    <img src="assets/img/quick-view/quick-nav-3.jpg" alt="">
-                                    </button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="nav4-tab" data-bs-toggle="tab" data-bs-target="#nav4" type="button" role="tab" aria-controls="nav4" aria-selected="false">
-                                    <img src="assets/img/quick-view/quick-nav-4.jpg" alt="">
-                                    </button>
-                                </li>
-                                </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <div class="product__modal-content">
-                            <h4><a href="product-details.html">Samsung C49J89: £875, Debenhams Plus</a></h4>
-                            <div class="product__review d-sm-flex">
-                                <div class="rating rating__shop mb-10 mr-30">
-                                <ul>
-                                    <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                    <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                    <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                    <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                    <li><a href="#"><i class="fal fa-star"></i></a></li>
-                                </ul>
-                                </div>
-                                <div class="product__add-review mb-15">
-                                <span>01 review</span>
-                                </div>
-                            </div>
-                            <div class="product__price">
-                                <span>$109.00 – $307.00</span>
-                            </div>
-                            <div class="product__modal-des mt-20 mb-15">
-                                <ul>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Bass and Stereo Sound.</a></li>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Display with 3088 x 1440 pixels resolution.</a></li>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Memory, Storage & SIM: 12GB RAM, 256GB.</a></li>
-                                    <li><a href="#"><i class="fas fa-circle"></i> Androi v10.0 Operating system.</a></li>
-                                </ul>
-                            </div>
-                            <div class="product__stock mb-20">
-                                <span class="mr-10">Availability :</span>
-                                <span>1795 in stock</span>
-                            </div>
-                            <div class="product__modal-form">
-                                <form action="#">
-                                <div class="pro-quan-area d-lg-flex align-items-center">
-                                    <div class="product-quantity mr-20 mb-25">
-                                        <div class="cart-plus-minus p-relative"><input readonly type="text" value="1" /></div>
-                                    </div>
-                                    <div class="pro-cart-btn mb-25">
-                                        <button class="cart-btn" on type="submit">Add to cart</button>
-                                    </div>
-                                </div>
-                                </form>
-                            </div>
-                            <div class="product__stock mb-30">
-                                <ul>
-                                    <li><a href="#">
-                                        <span class="sku mr-10">SKU:</span>
-                                        <span>Samsung C49J89: £875, Debenhams Plus</span></a>
-                                    </li>
-                                    <li><a href="#">
-                                        <span class="cat mr-10">Categories:</span>
-                                        <span>iPhone, Tablets</span></a>
-                                    </li>
-                                    <li><a href="#">
-                                        <span class="tag mr-10">Tags:</span>
-                                        <span>Smartphone, Tablets</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 {% endblock content %}
 
 {% block js %}
+
 <script>
-    let addToCart = async (id)=>{
-        let addToCartUrl = '/cart-add'
-        let url = addToCartUrl +"/"+id;
+      let addToCart = async (id,btn) => {
+    let addToCartUrl = '/cart-add'
+    let url = addToCartUrl + "/" + id;
+    let response = await fetch(url);
+    
+    // Get the input element
+    let inp = document.getElementById(`in${id}`);
+    
+
+    // Increment the value as a number
+    if(btn){
+
+        inp.value = parseInt(inp.value) + 1;
+    }
+    let count = document.getElementById('count');
+    res = await response.json()
+    count.innerHTML = res.count;
+
+    showNotification("Added to cart successfully");
+    return await res;
+}
+     let minusCart = async (id)=>{
+        let minusCartUrl = '/cart-minus'
+        let url = minusCartUrl +"/"+id;
         let response = await fetch(url);
-        return response.json();
-  
-  
+        let count = document.getElementById('count');
+        res = await response.json()
+        count.innerHTML = res.count;
+        showNotification("Reduced from cart successfully");
+        
+        return res;
      }
 </script>
 {% endblock js %}

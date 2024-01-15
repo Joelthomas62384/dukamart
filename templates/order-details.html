@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="container my-5">
+
+
+    <div class="accordion" id="accordionExample">
+
+        {% for order in orders %}
+
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne-{{order.id}}" aria-expanded="true" aria-controls="collapseOne">
+             Order id: {{order.id}} &nbsp;  
+             {% if order.delivered %}
+            <span class="badge bg-primary">Delivered</span>
+             {% else %}
+             <span class="badge bg-secondary">Not Delivered</span>
+             {% endif %}
+            </button>
+          </h2>
+          <div id="collapseOne-{{order.id}}" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body ">
+              <h2>Details</h2>
+              <h4>Products</h4>
+              <div class="my-5">
+              <ul>
+                {% for prod in order.orderproducts_set.all %}
+                <li class="my-3"><a  href="{% url "product_detail" prod.product.slug %}"> <img width="85px" height="85px" src="{{prod.product.featured_image}}" alt=""> {{prod.product.name|truncatewords:20}}</a></li>
+                {% endfor %}
+              </ul>
+              </div>
+              <h4>Product Tracking</h4>
+              <div class="my-3">
+                <ul>
+                    {% for info in order.ordertracking_set.all %}
+                    <li style="list-style-type: disc;" class="my-3">{{info.reached}}</li>
+                    {% endfor %}
+
+                </ul>
+
+                
+              </div>
+
+              {% if order.delivered %}
+              <h5>Delivered</h5>
+              {% else %}
+              <h5>Not Delivered</h5>
+              {% endif %}
+
+            </div>
+          </div>
+        </div>
+        
+        {% endfor %}
+         
+      </div>
+</div>
+
+
+
+{% endblock content %}
