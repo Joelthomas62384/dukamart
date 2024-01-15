@@ -69,16 +69,20 @@
       <script src="{% static 'assets/js/main.js' %}"></script>
      
       {% include "includes/footer.html" %}
-      <script>
-        function showNotification(message) {
-            // Set the message in the toast body
-            document.getElementById('notificationMessage').innerText = message;
-            
-            // Show the notification
-            $('#notificationToast').toast('show');
-            $('#notificationToast').css('display', 'block'); // or $('#notificationToast').show();
-        }
-      </script>
+ 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function showNotification(message) {
+        // Set the message in the toast body
+        $('#notificationMessage').text(message);
+
+        // Show the notification
+        $('#notificationToast').toast('show');
+        $('#notificationToast').css('display','block');
+    }
+</script>
       {% block js %}{% endblock js %}
    </body>
 
